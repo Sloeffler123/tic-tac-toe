@@ -1,11 +1,5 @@
 
 
-board = [
-    [7,8,9],
-    [4,5,6],
-    [1,2,3],
-]
-
 #board[0][wherever they want to play]
 #input is 1-9 
 #for ai just have it randomly select a space that has not been selected this could be easy mode
@@ -34,24 +28,30 @@ def type_of_play():
     print('1. Player vs. Player')
     print('2. Computer vs. Computer')
     try:
-        user_input = input('Select an option (0-2): ')
+        user_input = int(input('Select an option (0-2): '))
+        if user_input < 0 or user_input > 2:
+            raise Exception('Please select a number between (0-2)')
     except ValueError:
         print('Please select a valid number')
     return user_input
 
-def player1_name():
-    player_name = input("Please enter player 1's name: ")
-    return player_name
-
-def player2_name():
-    player_name = input("Please enter player 2's name: ")
-    return player_name
+def players_name(user_input):
+    if user_input == 0:
+        player_name = input("Please enter the players name who will take on the computer: ")
+        computer_name = 'Computer'
+        return player_name,computer_name
+    elif user_input == 1:
+        player1_name = input("Please enter player 1's name: ")  
+        player2_name = input("Please enter player 2's name: ")
+        return player1_name,player2_name
+    else:
+        computer_1 = 'Computer 1'
+        computer_2 = 'Computer 2'
+        return computer_1,computer_2
 
 def player_position(player):
-    user_input = input(f'{player}, choose your position')
+    user_input = int(input(f'{player}, choose your position'))
     return user_input
-
-
 
 #if both players are none then assign both to be AI if one is absent assign player 2 as AI
 def player_sides(player_1=None, player_2=None):
