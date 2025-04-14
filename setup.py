@@ -7,9 +7,9 @@ board = [
 
 def starting_board(board):
     board = f'''\n            {board[0][0]} | {board[0][1]} | {board[0][2]}
-            -----------
+            ----------
             {board[1][0]} | {board[1][1]} | {board[1][2]}
-            -----------
+            ----------
             {board[2][0]} | {board[2][1]} | {board[2][2]}'''
     print(board)
 
@@ -61,7 +61,6 @@ def player_sides(player1,user_input):
             side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
             if side != 'X' and side != 'O':
                 raise Exception('please enter a valid input')
-            
             else:
                 if side.upper() == 'O':
                     first = 'O'
@@ -72,11 +71,9 @@ def player_sides(player1,user_input):
                     second = 'O'
                     return first,second
         case 0:
-            
             side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
             if side != 'X' and side != 'O':
                 raise Exception('please enter a valid input')
-            
             else:
                 if side.upper() == 'O':
                     first = 'O'
@@ -96,7 +93,6 @@ def computer_inputs(computer_side):
     while type(rand_pos) != int:
         rand_pos_board = random.choice(board)
         rand_pos = random.choice(rand_pos_board)
-    print(rand_pos)
     change_board(rand_pos,computer_side)
 
 def change_board(player_position,player_side):  
