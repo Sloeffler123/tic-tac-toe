@@ -5,6 +5,14 @@ board = [
     [1,2,3],
 ]
 
+def reset():
+    global board
+    board = [
+    [7,8,9],
+    [4,5,6],
+    [1,2,3],
+]
+
 def starting_board(board):
     board = f'''\n            {board[0][0]} | {board[0][1]} | {board[0][2]}
             ----------
@@ -67,11 +75,10 @@ def player_position(player):
         except ValueError:
             print('Please enter a valid input')    
     
-
 def player_sides(player1,user_input):
     while True:
-        side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
         if user_input == 1 or user_input == 0:
+            side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
             if side != 'X' and side != 'O':
                 print('please enter a valid input')
             else:
@@ -87,13 +94,15 @@ def player_sides(player1,user_input):
             first = 'X'
             second = 'O'
             return first,second        
-def computer_inputs(computer_side):
+def computer_inputs(computer_side,comp_name):
     # easy mode
-    rand_pos = ''
-    while type(rand_pos) != int:
+    flag = True
+    while flag:
         rand_pos_board = random.choice(board)
         rand_pos = random.choice(rand_pos_board)
-    change_board(rand_pos,computer_side)
+        if type(rand_pos) == int:
+            flag = False 
+    change_board(rand_pos,computer_side,comp_name)
 
 def change_board(player_pos,player_side,player): 
     flag = True
@@ -127,9 +136,8 @@ def check_draw():
     if len(lst) == 9:
         print('Thats a draw!!!')
         return True
-                
           
-def win_condition(board,player,player_side):
+def win_condition(player,player_side):
     if len(set(board[0])) == 1:
         print(f'{player} wins!!!!')
         return True

@@ -10,11 +10,11 @@ def player_vs_player(user_input):
     while on:
         position_x = player_position(name1)
         change_board(position_x,first,name1)
-        if win_condition(board,name1,first):
+        if win_condition(name1,first):
             break
         position_o = player_position(name2)
         change_board(position_o,second,name2)
-        if win_condition(board,name2,second):
+        if win_condition(name2,second):
             break
 
 def player_vs_computer(user_input):
@@ -27,10 +27,10 @@ def player_vs_computer(user_input):
     while on:
         position_x = player_position(name1)
         change_board(position_x,first,name1)
-        if win_condition(board,name1,first):
+        if win_condition(name1,first):
             break
-        position_o = computer_inputs(second)
-        if win_condition(board,name2,second):
+        position_o = computer_inputs(second,name2)
+        if win_condition(name2,second):
             break
 
 def computer_vs_computer(user_input):
@@ -41,12 +41,11 @@ def computer_vs_computer(user_input):
     print(f'{name1} vs. {name2}')
     on = True
     while on:
-        position_x = computer_inputs(first)
-        change_board(position_x,first)
-        if win_condition(board,name1,first):
+        position_x = computer_inputs(first,name1)
+        if win_condition(name1,first):
             break
-        position_o = computer_inputs(second)
-        if win_condition(board,name2,second):
+        position_o = computer_inputs(second,name2)
+        if win_condition(name2,second):
             break
 
 def main():
@@ -57,7 +56,8 @@ def main():
         player_vs_player(user_input) 
     elif user_input == 2:
         computer_vs_computer(user_input) 
-    else:
-        raise Exception('Please enter a number between (0-2)')
-                    
+    play_again = input('Would you like to play again? (Y)es or (N)o ').upper()
+    if play_again == 'Y' or play_again == 'YES':
+        reset()
+        main()              
 main()    
