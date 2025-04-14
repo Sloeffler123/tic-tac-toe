@@ -89,21 +89,30 @@ def change_board(player_position,player_side):
         board[1][index] = player_side
     elif player_position in board[0]:
         index = board[0].index(player_position)
-        board[0][index] = player_side      
-def win_condition(board,):
-    if all(board[0]):
-        pass
-    elif all(board[1]):
-        pass
-    elif all(board[2]):
-        pass
-    elif all(board[0][0],board[1][1],board[2][2]):
-        pass
-    elif all(board[0][2],board[1][1],board[2][0]):
-        pass
-    elif all(board[0][0],board[1][0],board[2][0]):
-        pass
-    elif all(board[0][2],board[1][2],board[2][2]):
-        pass
-    elif all(board[0][1],board[1][1],board[2][1]):
-        pass
+        board[0][index] = player_side     
+    starting_board(board)     
+def win_condition(board,player,player_side):
+    if len(set(board[0])) == 1:
+        print(f'{player} wins!!!!')
+        return True
+    elif len(set(board[1])) == 1:
+        print(f'{player} wins!!!!')
+        return True
+    elif len(set(board[2])) == 1:
+        print(f'{player} wins!!!!')
+        return True
+    elif (board[0][0], board[1][1], board[2][2]) == (player_side,player_side,player_side):
+        print(f'{player} wins!!!!')
+        return True
+    elif (board[0][2],board[1][1],board[2][0]) == (player_side,player_side,player_side):
+        print(f'{player} wins!!!!')
+        return True
+    elif (board[0][0],board[1][0],board[2][0]) == (player_side,player_side,player_side):
+        print(f'{player} wins!!!!')
+        return True
+    elif (board[0][2],board[1][2],board[2][2]) == (player_side,player_side,player_side):
+        print(f'{player} wins!!!!')
+        return True
+    elif (board[0][1],board[1][1],board[2][1]) == (player_side,player_side,player_side):
+        print(f'{player} wins!!!!')
+        return True

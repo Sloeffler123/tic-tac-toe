@@ -11,9 +11,12 @@ def main():
     while on:
         position_x = player_position(name1,board)
         change_board(position_x,first)
+        if win_condition(board,name1,first):
+            break
         position_o = player_position(name2,board)
         change_board(position_o,second)
-        
+        if win_condition(board,name2,second):
+            break
     #this is where we need to figure out how to 
     #make player vs player ai vs ai and ai vs player
 
