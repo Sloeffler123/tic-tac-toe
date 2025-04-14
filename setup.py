@@ -1,14 +1,10 @@
-
+import random
 board = [
     [7,8,9],
     [4,5,6],
     [1,2,3],
 ]
 
-#board[0][wherever they want to play]
-#input is 1-9 
-#for ai just have it randomly select a space that has not been selected this could be easy mode
-#for hard mode make the ai smarter
 def starting_board(board):
     board = f'''\n            {board[0][0]} | {board[0][1]} | {board[0][2]}
             -----------
@@ -54,32 +50,55 @@ def players_name(user_input):
         computer_2 = 'Computer 2'
         return computer_1,computer_2
 
-def player_position(player,board):
+def player_position(player):
     starting_board(board)
     user_input = int(input(f'{player}, choose your position '))
     return user_input
 
-#if both players are none then assign both to be AI if one is absent assign player 2 as AI
-def sides(player1,player2,user_input):
+def player_sides(player1,user_input):
     match user_input:
-        case 0:
-            side = input(f"{player1}, what side would you like to be on? O's or X's")
-            if side.isalpha():
+        case 1:
+            side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
+            if side != 'X' and side != 'O':
+                raise Exception('please enter a valid input')
+            
+            else:
                 if side.upper() == 'O':
                     first = 'O'
                     second = 'X'
                     return first,second
+                else:
+                    first = 'X'
+                    second = 'O'
+                    return first,second
+        case 0:
+            
+            side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
+            if side != 'X' and side != 'O':
+                raise Exception('please enter a valid input')
+            
             else:
-                raise Exception('Please enter a valid input')        
-        case 1:
-            first = 'X'
-            second = 'O'
-            return first,second
+                if side.upper() == 'O':
+                    first = 'O'
+                    second = 'X'
+                    return first,second
+                else:
+                    first = 'X'
+                    second = 'O'
+                    return first,second
         case 2:
             first = 'X'
             second = 'O'
-            return first,second
-        
+            return first,second        
+def computer_inputs(computer_side):
+    # easy mode
+    rand_pos = ''
+    while type(rand_pos) != int:
+        rand_pos_board = random.choice(board)
+        rand_pos = random.choice(rand_pos_board)
+    print(rand_pos)
+    change_board(rand_pos,computer_side)
+
 def change_board(player_position,player_side):  
     if player_position in board[2]:
         index = board[2].index(player_position)
@@ -91,6 +110,7 @@ def change_board(player_position,player_side):
         index = board[0].index(player_position)
         board[0][index] = player_side     
     starting_board(board)     
+
 def win_condition(board,player,player_side):
     if len(set(board[0])) == 1:
         print(f'{player} wins!!!!')
