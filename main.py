@@ -9,11 +9,11 @@ def player_vs_player(user_input):
     on = True
     while on:
         position_x = player_position(name1)
-        change_board(position_x,first)
+        change_board(position_x,first,name1)
         if win_condition(board,name1,first):
             break
         position_o = player_position(name2)
-        change_board(position_o,second)
+        change_board(position_o,second,name2)
         if win_condition(board,name2,second):
             break
 
@@ -26,7 +26,7 @@ def player_vs_computer(user_input):
     on = True
     while on:
         position_x = player_position(name1)
-        change_board(position_x,first)
+        change_board(position_x,first,name1)
         if win_condition(board,name1,first):
             break
         position_o = computer_inputs(second)
@@ -50,16 +50,14 @@ def computer_vs_computer(user_input):
             break
 
 def main():
-    user_input = type_of_play()
-    try:
-        if user_input == 0:
-            player_vs_computer(user_input)
-        elif user_input == 1:
-            player_vs_player(user_input) 
-        elif user_input == 2:
-            computer_vs_computer(user_input) 
-        else:
-            raise Exception('Please enter a number between (0-2)')
-    except Exception:
-        pass                 
+    user_input = type_of_play() 
+    if user_input == 0:
+        player_vs_computer(user_input)
+    elif user_input == 1:
+        player_vs_player(user_input) 
+    elif user_input == 2:
+        computer_vs_computer(user_input) 
+    else:
+        raise Exception('Please enter a number between (0-2)')
+                    
 main()    

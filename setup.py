@@ -28,12 +28,17 @@ def type_of_play():
     print('0. Player vs. Computer ')
     print('1. Player vs. Player')
     print('2. Computer vs. Computer')
-    try:
-        user_input = int(input('Select an option (0-2): '))
-        if user_input < 0 or user_input > 2:
-            raise Exception('Please select a number between (0-2)')
-    except ValueError:
-        print('Please select a valid number')
+    flag = True
+    while flag:
+        try:
+            user_input = int(input('Select an option (0-2): '))
+            if user_input < 0 or user_input > 2:
+                print('Please select a number between (0-2)')
+            else:
+                flag = False
+        except ValueError:
+            print('Please enter a valid input')     
+        
     return user_input
 
 def players_name(user_input):
@@ -52,15 +57,23 @@ def players_name(user_input):
 
 def player_position(player):
     starting_board(board)
-    user_input = int(input(f'{player}, choose your position '))
-    return user_input
+    while True:
+        try:
+            user_input = int(input(f'{player}, choose your position '))
+            if user_input > 9 or user_input < 1:
+                print('Please enter a number from (1-9)')
+            else:    
+                return user_input
+        except ValueError:
+            print('Please enter a valid input')    
+    
 
 def player_sides(player1,user_input):
-    match user_input:
-        case 1:
-            side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
+    while True:
+        side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
+        if user_input == 1 or user_input == 0:
             if side != 'X' and side != 'O':
-                raise Exception('please enter a valid input')
+                print('please enter a valid input')
             else:
                 if side.upper() == 'O':
                     first = 'O'
@@ -69,21 +82,8 @@ def player_sides(player1,user_input):
                 else:
                     first = 'X'
                     second = 'O'
-                    return first,second
-        case 0:
-            side = input(f"{player1}, what side would you like to be on? O's or X's: ").upper()
-            if side != 'X' and side != 'O':
-                raise Exception('please enter a valid input')
-            else:
-                if side.upper() == 'O':
-                    first = 'O'
-                    second = 'X'
-                    return first,second
-                else:
-                    first = 'X'
-                    second = 'O'
-                    return first,second
-        case 2:
+                    return first,second 
+        else:    
             first = 'X'
             second = 'O'
             return first,second        
@@ -95,18 +95,40 @@ def computer_inputs(computer_side):
         rand_pos = random.choice(rand_pos_board)
     change_board(rand_pos,computer_side)
 
-def change_board(player_position,player_side):  
-    if player_position in board[2]:
-        index = board[2].index(player_position)
-        board[2][index] = player_side
-    elif player_position in board[1]:
-        index = board[1].index(player_position)
-        board[1][index] = player_side
-    elif player_position in board[0]:
-        index = board[0].index(player_position)
-        board[0][index] = player_side     
+def change_board(player_pos,player_side,player): 
+    flag = True
+    while flag:
+        if player_pos in board[2] and isinstance(board[2][board[2].index(player_pos)],int):
+            index = board[2].index(player_pos)
+            board[2][index] = player_side
+            flag = False
+        elif player_pos in board[1] and isinstance(board[1][board[1].index(player_pos)],int):
+            index = board[1].index(player_pos)
+            board[1][index] = player_side
+            flag = False
+        elif player_pos in board[0] and isinstance(board[0][board[0].index(player_pos)],int):
+            index = board[0].index(player_pos)
+            board[0][index] = player_side 
+            flag = False   
+        else:
+            print('Space already taken')   
+            player_pos = player_position(player)
     starting_board(board)     
 
+def check_draw():
+    lst = []
+    for b in board:
+        for i in b:
+            if type(i) == str:
+                lst.append(i)
+            else:
+                break
+                
+    if len(lst) == 9:
+        print('Thats a draw!!!')
+        return True
+                
+          
 def win_condition(board,player,player_side):
     if len(set(board[0])) == 1:
         print(f'{player} wins!!!!')
@@ -131,4 +153,6 @@ def win_condition(board,player,player_side):
         return True
     elif (board[0][1],board[1][1],board[2][1]) == (player_side,player_side,player_side):
         print(f'{player} wins!!!!')
+        return True
+    if check_draw():
         return True
