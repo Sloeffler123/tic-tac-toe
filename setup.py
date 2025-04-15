@@ -1,4 +1,5 @@
 import random
+import time
 board = [
     [7,8,9],
     [4,5,6],
@@ -94,15 +95,6 @@ def player_sides(player1,user_input):
             first = 'X'
             second = 'O'
             return first,second        
-def computer_inputs(computer_side,comp_name):
-    # easy mode
-    flag = True
-    while flag:
-        rand_pos_board = random.choice(board)
-        rand_pos = random.choice(rand_pos_board)
-        if type(rand_pos) == int:
-            flag = False 
-    change_board(rand_pos,computer_side,comp_name)
 
 def change_board(player_pos,player_side,player): 
     flag = True
@@ -120,7 +112,7 @@ def change_board(player_pos,player_side,player):
             board[0][index] = player_side 
             flag = False   
         else:
-            print('Space already taken')   
+            print(f'{player_pos} already taken')   
             player_pos = player_position(player)
     starting_board(board)     
 
@@ -164,3 +156,51 @@ def win_condition(player,player_side):
         return True
     if check_draw():
         return True
+# Easy Mode
+def computer_inputs(computer_side,comp_name):
+    # easy mode
+    flag = True
+    while flag:
+        rand_pos_board = random.choice(board)
+        rand_pos = random.choice(rand_pos_board)
+        if type(rand_pos) == int:
+            flag = False 
+    change_board(rand_pos,computer_side,comp_name)  
+# Medium Mode
+def computer_medium(computer_side,player_side,comp_name):
+    winning_lines = [
+    # Horizontal rows
+    [(0, 0), (0, 1), (0, 2)],
+    [(1, 0), (1, 1), (1, 2)],
+    [(2, 0), (2, 1), (2, 2)],
+
+    # Vertical columns
+    [(0, 0), (1, 0), (2, 0)],
+    [(0, 1), (1, 1), (2, 1)],
+    [(0, 2), (1, 2), (2, 2)],
+
+    # Diagonals
+    [(0, 0), (1, 1), (2, 2)],
+    [(0, 2), (1, 1), (2, 0)]
+]
+    found = False
+    for row in winning_lines:
+        count = 0
+        temp = 0
+        for f_index,s_index in row:
+            if board[f_index][s_index] == player_side:
+                count += 1
+            else:
+                if board[f_index][s_index] == computer_side:
+                    count = 0
+                if board[f_index][s_index] != 'O':    
+                    num = board[f_index][s_index] 
+            temp += 1       
+            if count == 2 and temp == 3:
+                found = True
+                change_board(num,computer_side,comp_name)
+                break
+        if found is True:
+            break    
+    if  found is False:
+        computer_inputs(computer_side,comp_name)   
