@@ -193,57 +193,65 @@ def computer_medium(computer_side,player_side,comp_name):
     if  found is False:
         computer_inputs(computer_side,comp_name)   
 
-def min_max(player,player_side,computer_side,comp_name,turn):
-    # copy_board = copy.deepcopy(board)
-
-    if win_condition(player_side):
+def min_max(player,computer_side,player_side,comp_name,turn):
+    if is_winner(player_side):
         return -1
-    #comp wins
-    if win_condition(computer_side):
-        return +1
-    #draw
+    if is_winner(computer_side):
+        return 1
     if check_draw():
         return 0
-    #computer turn
     if turn:
         best_score = float('-inf')
-        for row in board:
-            for char in row:
-                if char not in {'X','O'}:
-                    #make the change
-                    index = row.index(char)
-                    change_board(char,computer_side,comp_name)
-                    score = min_max(player,player_side,computer_side,comp_name,False)
-                    board[board.index(row)][index] = char
+        for row in range(3):
+            for char in range(3):
+                if isinstance(board[row][char], int):
+                    index = board[row][char]
+                    board[row][char] = computer_side
+                    score = min_max(player,computer_side,player_side,comp_name,False)
+                    board[row][char] = index
                     best_score = max(score,best_score)
         return best_score            
     else:
         best_score = float('inf')
-        for row in board:
-            for char in row:
-                if char not in {'X','O'}:
-                    #make the change
-                    index = row.index(char)
-                    change_board(char,player_side,player)
-                    score = min_max(player,player_side,computer_side,comp_name,True)
-                    board[board.index(row)][index] = char
+        for row in range(3):
+            for char in range(3):
+                if isinstance(board[row][char], int):
+                    index = board[row][char]
+                    board[row][char] = player_side
+                    score = min_max(player,computer_side,player_side,comp_name,True)
+                    board[row][char] = index
                     best_score = min(score,best_score)
         return best_score            
 
 def find_best_move(player,computer_side,player_side,comp_name,turn):
     best_move = None
     best_score = float('-inf')
-    for row in board:
-        for char in row:
-            if char not in {'X','O'}:
-                index = row.index(char)
-                score = min_max(player,computer_side,player_side,comp_name,turn)
-                board[board.index(row)][index] = index
+    for row in range(3):
+        for char in range(3):
+            if isinstance(board[row][char], int):
+                index = board[row][char]
+                board[row][char] = computer_side
+                score = min_max(player,computer_side,player_side,comp_name,False)
+                board[row][char] = index
+                print(f'try moving {index}, got score {score}')
                 if score > best_score:
                     best_score = score
                     best_move = index
-                    return best_move
+    return best_move                
 
 def computer_hard(player,computer_side,player_side,comp_name,turn):
     best_move = find_best_move(player,computer_side,player_side,comp_name,turn)
     change_board(best_move,computer_side,comp_name)
+
+def is_winner(side):
+    for row in board:
+        if all(cell == side for cell in row):
+            return True
+    for col in range(3):
+        if all(board[row][col] == side for row in range(3)):
+            return True
+    if all(board[i][i] == side for i in range(3)):
+        return True
+    if all(board[i][2 - i] == side for i in range(3)):
+        return True
+    return False
