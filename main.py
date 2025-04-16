@@ -10,11 +10,19 @@ def player_vs_player(user_input):
     while on:
         position_x = player_position(name1)
         change_board(position_x,first,name1)
-        if win_condition(name1,first):
+        if win_condition(first):
+            print(f'{name1} wins!!!')
+            break
+        if check_draw():
+            print('Thats a draw!!!')
             break
         position_o = player_position(name2)
         change_board(position_o,second,name2)
-        if win_condition(name2,second):
+        if win_condition(second):
+            print(f'{name2} wins!!!')
+            break
+        if check_draw():
+            print('Thats a draw!!!')
             break
 
 def player_vs_computer(user_input):
@@ -29,22 +37,57 @@ def player_vs_computer(user_input):
         while on:
             position_x = player_position(name1)
             change_board(position_x,first,name1)
-            if win_condition(name1,first):
+            if win_condition(first):
+                print(f'{name1} wins!!!')
                 break
-            position_o = computer_inputs(second,name2)
-            if win_condition(name2,second):
+            if check_draw():
+                print('Thats a draw!!!')
+                break
+            computer_inputs(second,name2)
+            if win_condition(second):
+                print(f'{name2} wins!!!')
+                break
+            if check_draw():
+                print('Thats a draw')
                 break
     elif comp_difficulty == 'M':
         on = True
         while on:
             position_x = player_position(name1)
             change_board(position_x,first,name1)
-            if win_condition(name1,first):
+            if win_condition(first):
+                print(f'{name1} wins!!!')
                 break
-            position_o = computer_medium(second,first,name2)
-            if win_condition(name2,second):
+            if check_draw():
+                print(f'Thats a draw!!!')
                 break
-
+            computer_medium(second,first,name2)
+            if win_condition(second):
+                print(f'{name2} wins!!!')
+                break
+            if check_draw():
+                print(f'Thats a draw')
+                break
+    else:
+        on = True
+        while on:
+            position_x = player_position(name1)
+            change_board(position_x,first,name1)
+            starting_board(board)
+            if win_condition(first):
+                print(f'{name1} wins!!!')
+                break
+            if check_draw():
+                print(f'Thats a draw!!!')
+                break
+            computer_hard(name1,second,first,name2,True)
+            starting_board(board)
+            if win_condition(second):
+                print(f'{name2} wins!!!')
+                break
+            if check_draw():
+                print(f'Thats a draw!!!')
+                break
 def computer_vs_computer(user_input):
     
     print('\n')
@@ -54,10 +97,18 @@ def computer_vs_computer(user_input):
     on = True
     while on:
         position_x = computer_inputs(first,name1)
-        if win_condition(name1,first):
+        if win_condition(first):
+            print(f'{name1} wins!!!')
+            break
+        if check_draw():
+            print('Thats a draw!!!')
             break
         position_o = computer_inputs(second,name2)
-        if win_condition(name2,second):
+        if win_condition(second):
+            print(f'{name2} wins!!!')
+            break
+        if check_draw():
+            print('Thats a draw!!!')
             break
 
 def main():

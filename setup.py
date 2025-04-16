@@ -1,5 +1,5 @@
 import random
-import time
+import copy
 board = [
     [7,8,9],
     [4,5,6],
@@ -114,7 +114,7 @@ def change_board(player_pos,player_side,player):
         else:
             print(f'{player_pos} already taken')   
             player_pos = player_position(player)
-    starting_board(board)     
+        
 
 def check_draw():
     lst = []
@@ -126,39 +126,27 @@ def check_draw():
                 break
                 
     if len(lst) == 9:
-        print('Thats a draw!!!')
         return True
           
-def win_condition(player,player_side):
+def win_condition(player_side):
     if len(set(board[0])) == 1:
-        print(f'{player} wins!!!!')
         return True
     elif len(set(board[1])) == 1:
-        print(f'{player} wins!!!!')
         return True
     elif len(set(board[2])) == 1:
-        print(f'{player} wins!!!!')
         return True
     elif (board[0][0], board[1][1], board[2][2]) == (player_side,player_side,player_side):
-        print(f'{player} wins!!!!')
         return True
     elif (board[0][2],board[1][1],board[2][0]) == (player_side,player_side,player_side):
-        print(f'{player} wins!!!!')
         return True
     elif (board[0][0],board[1][0],board[2][0]) == (player_side,player_side,player_side):
-        print(f'{player} wins!!!!')
         return True
     elif (board[0][2],board[1][2],board[2][2]) == (player_side,player_side,player_side):
-        print(f'{player} wins!!!!')
         return True
     elif (board[0][1],board[1][1],board[2][1]) == (player_side,player_side,player_side):
-        print(f'{player} wins!!!!')
-        return True
-    if check_draw():
         return True
 # Easy Mode
 def computer_inputs(computer_side,comp_name):
-    # easy mode
     flag = True
     while flag:
         rand_pos_board = random.choice(board)
@@ -204,3 +192,58 @@ def computer_medium(computer_side,player_side,comp_name):
             break    
     if  found is False:
         computer_inputs(computer_side,comp_name)   
+
+def min_max(player,player_side,computer_side,comp_name,turn):
+    # copy_board = copy.deepcopy(board)
+
+    if win_condition(player_side):
+        return -1
+    #comp wins
+    if win_condition(computer_side):
+        return +1
+    #draw
+    if check_draw():
+        return 0
+    #computer turn
+    if turn:
+        best_score = float('-inf')
+        for row in board:
+            for char in row:
+                if char not in {'X','O'}:
+                    #make the change
+                    index = row.index(char)
+                    change_board(char,computer_side,comp_name)
+                    score = min_max(player,player_side,computer_side,comp_name,False)
+                    board[board.index(row)][index] = char
+                    best_score = max(score,best_score)
+        return best_score            
+    else:
+        best_score = float('inf')
+        for row in board:
+            for char in row:
+                if char not in {'X','O'}:
+                    #make the change
+                    index = row.index(char)
+                    change_board(char,player_side,player)
+                    score = min_max(player,player_side,computer_side,comp_name,True)
+                    board[board.index(row)][index] = char
+                    best_score = min(score,best_score)
+        return best_score            
+
+def find_best_move(player,computer_side,player_side,comp_name,turn):
+    best_move = None
+    best_score = float('-inf')
+    for row in board:
+        for char in row:
+            if char not in {'X','O'}:
+                index = row.index(char)
+                score = min_max(player,computer_side,player_side,comp_name,turn)
+                board[board.index(row)][index] = index
+                if score > best_score:
+                    best_score = score
+                    best_move = index
+                    return best_move
+
+def computer_hard(player,computer_side,player_side,comp_name,turn):
+    best_move = find_best_move(player,computer_side,player_side,comp_name,turn)
+    change_board(best_move,computer_side,comp_name)
