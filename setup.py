@@ -114,7 +114,7 @@ def change_board(player_pos,player_side,player):
         else:
             print(f'{player_pos} already taken')   
             player_pos = player_position(player)
-        
+    starting_board(board)    
 
 def check_draw():
     lst = []
@@ -233,7 +233,6 @@ def find_best_move(player,computer_side,player_side,comp_name,turn):
                 board[row][char] = computer_side
                 score = min_max(player,computer_side,player_side,comp_name,False)
                 board[row][char] = index
-                print(f'try moving {index}, got score {score}')
                 if score > best_score:
                     best_score = score
                     best_move = index
